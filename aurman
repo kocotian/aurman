@@ -8,11 +8,11 @@ CLEARC='\e[0m'
 ARG='\e[34m'
 PKG='\e[35m'
 
-WORKDIR='$HOME/.aurman'
+WORKDIR="$HOME/.aurman"
 
 exec 2> /dev/null
 
-echo -e "\e[1m\e[94mA\e[93mU\e[97mRM\e[93mA\e[94mN${CLEARC} \e[1m\e[37mby Kocotian v0.1${CLEARC}"
+echo -e "\e[1m\e[94mA\e[93mU\e[97mRM\e[93mA\e[94mN${CLEARC} \e[1m\e[37mby Kocotian v0.2.1${CLEARC}"
 
 if [ $1 == '-S' ]
 then
@@ -25,16 +25,24 @@ then
 		fi
 		cd "$WORKDIR/pkgs"
 		echo -e "${INFO}==>${TEXT} Cloning ${PKG}$2${TEXT} package data${CLEARC}"
+		exec 2> /dev/stdout
+		echo -e "${TEXT}"
 		git clone https://aur.archlinux.org/$2.git
+		exec 2> /dev/null
+		echo -e "${CLEARC}"
 		echo -e "${SUCCESS}==>${TEXT} Package data cloned${CLEARC}"
 		cd $2
 		if [ -z ${3+x} ]
 		then
 			echo -e "${INFO}==>${TEXT} ${PKG}$2${TEXT} package make started${CLEARC}"
+			exec 2> /dev/stdout
 			makepkg -si
+			exec 2> /dev/null
 		else
 			echo -e "${INFO}==>${TEXT} ${PKG}$2${TEXT} package make started with custom settings ${ARG}$3${CLEARC}"
+			exec 2> /dev/stdout
 			makepkg $3
+			exec 2> /dev/null
 		fi
 	else
 		echo "Usage: aurman -S <package name>"
